@@ -1,0 +1,39 @@
+# OS
+.DS_Store
+
+# Env / secrets
+.env
+.env.*
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Node
+node_modules/
+**/node_modules/
+
+# Build outputs
+/dist/
+**/dist/
+/build/
+**/build/
+
+# Vite
+.vite/
+
+# Coverage
+coverage/
+
+# PM2
+.pids/
+
+# Python (if any)
+__pycache__/
+*.py[cod]
+
+# SQLite
+*.sqlite3
+

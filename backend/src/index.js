@@ -5,7 +5,7 @@ import mongoose from 'mongoose'
 import swaggerUi from 'swagger-ui-express'
 import imageRoutes from './routes/images.js'
 import authRoutes from './routes/auth.js'
-import swaggerSpec from './docs/swagger.js'
+import { buildSwaggerSpec } from './docs/swagger.js'
 
 dotenv.config()
 
@@ -20,6 +20,7 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' })
 })
 
+const swaggerSpec = buildSwaggerSpec(process.env.SWAGGER_SERVER_URL)
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 app.use('/api/auth', authRoutes)
 app.use('/api/images', imageRoutes)
