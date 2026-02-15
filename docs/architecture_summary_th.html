@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <title>สรุปสถาปัตยกรรมระบบ (Production)</title>
+  <style>
+    body { font-family: "Helvetica Neue", Arial, sans-serif; color: #1c1c1c; margin: 28px; }
+    h1 { font-size: 22px; margin: 0 0 4px; }
+    h2 { font-size: 16px; margin: 20px 0 6px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+    h3 { font-size: 14px; margin: 12px 0 6px; }
+    p, li { font-size: 12px; line-height: 1.5; }
+    .subtitle { font-size: 12px; color: #555; margin-bottom: 12px; }
+    .grid { display: table; width: 100%; border-collapse: collapse; margin-top: 6px; }
+    .row { display: table-row; }
+    .cell { display: table-cell; padding: 6px 8px; border: 1px solid #e5e5e5; vertical-align: top; font-size: 12px; }
+    .tag { display: inline-block; background: #f1f3f5; border: 1px solid #e0e0e0; padding: 2px 6px; border-radius: 999px; font-size: 11px; margin-right: 6px; }
+    .muted { color: #666; }
+    pre { background: #f7f7f7; border: 1px solid #eee; padding: 10px; font-size: 11px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>สรุปสถาปัตยกรรมระบบ (Production)</h1>
+  <div class="subtitle">Dynamic Keyword Gallery</div>
+
+  <h2>1) ภาพรวมสถาปัตยกรรม</h2>
+  <p>
+    <span class="tag">Frontend</span> Windows Server + IIS (เสิร์ฟ React Static Build) <br/>
+    <span class="tag">Backend API</span> AWS EC2 (Ubuntu) + Node.js + Express + PM2 + Nginx <br/>
+    <span class="tag">Database</span> DigitalOcean Managed MongoDB (TLS)
+  </p>
+
+  <h2>2) เทคโนโลยีที่ใช้ในการพัฒนา</h2>
+  <ul>
+    <li>Frontend: React (Vite) + HTML/CSS/JavaScript</li>
+    <li>Backend: Node.js (Express) + JWT + Swagger</li>
+    <li>Database: MongoDB (Managed on DigitalOcean)</li>
+  </ul>
+
+  <h2>3) Server Specifications และ OS/Software</h2>
+  <div class="grid">
+    <div class="row">
+      <div class="cell"><strong>Frontend (Windows IIS)</strong></div>
+      <div class="cell">2 vCPU / 4GB RAM / 60GB SSD</div>
+      <div class="cell">Windows Server 2019/2022, IIS, URL Rewrite, SSL (optional)</div>
+    </div>
+    <div class="row">
+      <div class="cell"><strong>Backend (AWS EC2)</strong></div>
+      <div class="cell">t3.small (2 vCPU / 2GB RAM)</div>
+      <div class="cell">Ubuntu 22.04 LTS, Node.js 20 LTS, PM2, Nginx</div>
+    </div>
+    <div class="row">
+      <div class="cell"><strong>Database (DigitalOcean)</strong></div>
+      <div class="cell">Managed MongoDB Cluster</div>
+      <div class="cell">TLS required, IP allowlist เฉพาะ AWS EC2</div>
+    </div>
+  </div>
+
+  <h2>4) ขั้นตอนการ Deploy (ย่อ)</h2>
+  <h3>Frontend (IIS)</h3>
+  <ul>
+    <li>ตั้งค่า VITE_API_BASE เป็น https://mytest.thai-connects.site แล้ว build</li>
+    <li>คัดลอกโฟลเดอร์ dist ไปที่ C:\inetpub\wwwroot\gallery</li>
+    <li>ตั้ง IIS Binding ให้โดเมน frontend.thai-connects.site</li>
+    <li>วาง web.config สำหรับ SPA rewrite และ MIME types</li>
+  </ul>
+
+  <h3>Backend (AWS)</h3>
+  <ul>
+    <li>clone repo, npm install</li>
+    <li>ตั้ง .env: MONGODB_URI, JWT_SECRET, CORS_ORIGIN</li>
+    <li>รันด้วย PM2 และตั้ง Nginx reverse proxy</li>
+    <li>เปิด HTTPS ด้วย Let’s Encrypt (ถ้าต้องการ)</li>
+  </ul>
+
+  <h3>Database (DigitalOcean)</h3>
+  <ul>
+    <li>สร้าง user/password และเปิด allowlist เฉพาะ IP ของ AWS</li>
+    <li>ใช้ connection string แบบ mongodb+srv พร้อม tls=true</li>
+  </ul>
+
+  <h2>5) Security</h2>
+  <ul>
+    <li>ใช้ JWT สำหรับ authentication</li>
+    <li>ใช้ HTTPS ทั้ง Frontend และ Backend</li>
+    <li>จำกัด IP ที่เข้าถึงฐานข้อมูล</li>
+    <li>เก็บ secret ไว้ใน .env</li>
+  </ul>
+
+  <h2>6) Diagram (ข้อความประกอบ)</h2>
+  <pre>
+Users/Browser
+     |
+     | HTTPS
+     v
+[Windows IIS]
+(React Static)
+     |
+     | API Calls (HTTPS)
+     v
+[AWS EC2]
+(Node.js + Express + PM2 + Nginx)
+     |
+     | TLS (27017)
+     v
+[DigitalOcean MongoDB]
+  </pre>
+
+  <p class="muted">หมายเหตุ: สามารถเพิ่ม CDN สำหรับ Frontend และเพิ่ม Auto Scaling สำหรับ Backend ในอนาคตได้</p>
+</body>
+</html>

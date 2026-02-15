@@ -13,7 +13,25 @@ const app = express()
 const PORT = process.env.PORT || 8000
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/gallery'
 
-app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }))
+const rawOrigins = process.env.CORS_ORIGIN || '*'
+const allowedOrigins =
+  rawOrigins === '*'
+    ? '*'
+    : rawOrigins
+        .split(',')
+        .map(origin => origin.trim())
+        .filter(Boolean)
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true)
+      if (allowedOrigins === '*') return callback(null, true)
+      if (allowedOrigins.includes(origin)) return callback(null, true)
+      return callback(new Error('Not allowed by CORS'))
+    }
+  })
+)
 app.use(express.json())
 
 app.get('/health', (req, res) => {

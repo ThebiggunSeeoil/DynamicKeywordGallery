@@ -1,0 +1,69 @@
+สรุปสถาปัตยกรรมระบบ (Production)
+Dynamic Keyword Gallery
+
+ภาพรวมสถาปัตยกรรม
+- Frontend: Windows Server + IIS (เสิร์ฟ React Static Build)
+- Backend API: AWS EC2 (Ubuntu) + Node.js + Express + PM2 + Nginx
+- Database: DigitalOcean Managed MongoDB (TLS)
+
+เทคโนโลยีที่ใช้ในการพัฒนา
+- Frontend: React (Vite) + HTML/CSS/JavaScript
+- Backend: Node.js (Express) + JWT + Swagger
+- Database: MongoDB (Managed on DigitalOcean)
+
+Server Specifications และ OS/Software
+Frontend (Windows IIS)
+- VM: 2 vCPU / 4GB RAM / 60GB SSD
+- OS: Windows Server 2019/2022
+- Software: IIS, URL Rewrite, SSL (optional)
+
+Backend (AWS EC2)
+- Instance: t3.small (2 vCPU / 2GB RAM)
+- OS: Ubuntu 22.04 LTS
+- Software: Node.js 20 LTS, PM2, Nginx
+
+Database (DigitalOcean)
+- Managed MongoDB Cluster (TLS required)
+- ตั้ง allowlist เฉพาะ IP ของ AWS EC2
+
+ขั้นตอนการ Deploy (ย่อ)
+Frontend (IIS)
+1) ตั้งค่า VITE_API_BASE เป็น https://mytest.thai-connects.site แล้ว build
+2) คัดลอกโฟลเดอร์ dist ไปที่ C:\inetpub\wwwroot\gallery
+3) ตั้ง IIS Binding ให้โดเมน frontend.thai-connects.site
+4) ใส่ web.config สำหรับ SPA rewrite และ MIME types
+
+Backend (AWS)
+1) clone repo, npm install
+2) ตั้ง .env: MONGODB_URI, JWT_SECRET, CORS_ORIGIN
+3) รันด้วย PM2 และตั้ง Nginx reverse proxy
+4) เปิด HTTPS ด้วย Let’s Encrypt (ถ้าต้องการ)
+
+Database (DigitalOcean)
+1) สร้าง user/password และเปิด allowlist เฉพาะ IP ของ AWS
+2) ใช้ connection string แบบ mongodb+srv พร้อม tls=true
+
+Security
+- ใช้ JWT สำหรับ authentication
+- ใช้ HTTPS ทั้ง Frontend และ Backend
+- จำกัด IP ที่เข้าถึงฐานข้อมูล
+- เก็บ secret ไว้ใน .env
+
+Diagram (ข้อความประกอบ)
+Users/Browser
+     |
+     | HTTPS
+     v
+[Windows IIS]
+(React Static)
+     |
+     | API Calls (HTTPS)
+     v
+[AWS EC2]
+(Node.js + Express + PM2 + Nginx)
+     |
+     | TLS (27017)
+     v
+[DigitalOcean MongoDB]
+
+หมายเหตุ: สามารถเพิ่ม CDN สำหรับ Frontend และเพิ่ม Auto Scaling สำหรับ Backend ในอนาคตได้

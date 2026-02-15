@@ -1,0 +1,76 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2867
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Light;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \uc0\u3626 \u3619 \u3640 \u3611 \u3626 \u3606 \u3634 \u3611 \u3633 \u3605 \u3618 \u3585 \u3619 \u3619 \u3617 \u3619 \u3632 \u3610 \u3610  (Production)\
+Dynamic Keyword Gallery\
+\
+\uc0\u3616 \u3634 \u3614 \u3619 \u3623 \u3617 \u3626 \u3606 \u3634 \u3611 \u3633 \u3605 \u3618 \u3585 \u3619 \u3619 \u3617 \
+- Frontend: Windows Server + IIS (\uc0\u3648 \u3626 \u3636 \u3619 \u3660 \u3615  React Static Build)\
+- Backend API: AWS EC2 (Ubuntu) + Node.js + Express + PM2 + Nginx\
+- Database: DigitalOcean Managed MongoDB (TLS)\
+\
+\uc0\u3648 \u3607 \u3588 \u3650 \u3609 \u3650 \u3621 \u3618 \u3637 \u3607 \u3637 \u3656 \u3651 \u3594 \u3657 \u3651 \u3609 \u3585 \u3634 \u3619 \u3614 \u3633 \u3602 \u3609 \u3634 \
+- Frontend: React (Vite) + HTML/CSS/JavaScript\
+- Backend: Node.js (Express) + JWT + Swagger\
+- Database: MongoDB (Managed on DigitalOcean)\
+\
+Server Specifications \uc0\u3649 \u3621 \u3632  OS/Software\
+Frontend (Windows IIS)\
+- VM: 2 vCPU / 4GB RAM / 60GB SSD\
+- OS: Windows Server 2019/2022\
+- Software: IIS, URL Rewrite, SSL (optional)\
+\
+Backend (AWS EC2)\
+- Instance: t3.small (2 vCPU / 2GB RAM)\
+- OS: Ubuntu 22.04 LTS\
+- Software: Node.js 20 LTS, PM2, Nginx\
+\
+Database (DigitalOcean)\
+- Managed MongoDB Cluster (TLS required)\
+- \uc0\u3605 \u3633 \u3657 \u3591  allowlist \u3648 \u3593 \u3614 \u3634 \u3632  IP \u3586 \u3629 \u3591  AWS EC2\
+\
+\uc0\u3586 \u3633 \u3657 \u3609 \u3605 \u3629 \u3609 \u3585 \u3634 \u3619  Deploy (\u3618 \u3656 \u3629 )\
+Frontend (IIS)\
+1) \uc0\u3605 \u3633 \u3657 \u3591 \u3588 \u3656 \u3634  VITE_API_BASE \u3648 \u3611 \u3655 \u3609  https://mytest.thai-connects.site \u3649 \u3621 \u3657 \u3623  build\
+2) \uc0\u3588 \u3633 \u3604 \u3621 \u3629 \u3585 \u3650 \u3615 \u3621 \u3648 \u3604 \u3629 \u3619 \u3660  dist \u3652 \u3611 \u3607 \u3637 \u3656  C:\\inetpub\\wwwroot\\gallery\
+3) \uc0\u3605 \u3633 \u3657 \u3591  IIS Binding \u3651 \u3627 \u3657 \u3650 \u3604 \u3648 \u3617 \u3609  frontend.thai-connects.site\
+4) \uc0\u3651 \u3626 \u3656  web.config \u3626 \u3635 \u3627 \u3619 \u3633 \u3610  SPA rewrite \u3649 \u3621 \u3632  MIME types\
+\
+Backend (AWS)\
+1) clone repo, npm install\
+2) \uc0\u3605 \u3633 \u3657 \u3591  .env: MONGODB_URI, JWT_SECRET, CORS_ORIGIN\
+3) \uc0\u3619 \u3633 \u3609 \u3604 \u3657 \u3623 \u3618  PM2 \u3649 \u3621 \u3632 \u3605 \u3633 \u3657 \u3591  Nginx reverse proxy\
+4) \uc0\u3648 \u3611 \u3636 \u3604  HTTPS \u3604 \u3657 \u3623 \u3618  Let\'92s Encrypt (\u3606 \u3657 \u3634 \u3605 \u3657 \u3629 \u3591 \u3585 \u3634 \u3619 )\
+\
+Database (DigitalOcean)\
+1) \uc0\u3626 \u3619 \u3657 \u3634 \u3591  user/password \u3649 \u3621 \u3632 \u3648 \u3611 \u3636 \u3604  allowlist \u3648 \u3593 \u3614 \u3634 \u3632  IP \u3586 \u3629 \u3591  AWS\
+2) \uc0\u3651 \u3594 \u3657  connection string \u3649 \u3610 \u3610  mongodb+srv \u3614 \u3619 \u3657 \u3629 \u3617  tls=true\
+\
+Security\
+- \uc0\u3651 \u3594 \u3657  JWT \u3626 \u3635 \u3627 \u3619 \u3633 \u3610  authentication\
+- \uc0\u3651 \u3594 \u3657  HTTPS \u3607 \u3633 \u3657 \u3591  Frontend \u3649 \u3621 \u3632  Backend\
+- \uc0\u3592 \u3635 \u3585 \u3633 \u3604  IP \u3607 \u3637 \u3656 \u3648 \u3586 \u3657 \u3634 \u3606 \u3638 \u3591 \u3600 \u3634 \u3609 \u3586 \u3657 \u3629 \u3617 \u3641 \u3621 \
+- \uc0\u3648 \u3585 \u3655 \u3610  secret \u3652 \u3623 \u3657 \u3651 \u3609  .env\
+\
+Diagram (\uc0\u3586 \u3657 \u3629 \u3588 \u3623 \u3634 \u3617 \u3611 \u3619 \u3632 \u3585 \u3629 \u3610 )\
+Users/Browser\
+     |\
+     | HTTPS\
+     v\
+[Windows IIS]\
+(React Static)\
+     |\
+     | API Calls (HTTPS)\
+     v\
+[AWS EC2]\
+(Node.js + Express + PM2 + Nginx)\
+     |\
+     | TLS (27017)\
+     v\
+[DigitalOcean MongoDB]\
+\
+\uc0\u3627 \u3617 \u3634 \u3618 \u3648 \u3627 \u3605 \u3640 : \u3626 \u3634 \u3617 \u3634 \u3619 \u3606 \u3648 \u3614 \u3636 \u3656 \u3617  CDN \u3626 \u3635 \u3627 \u3619 \u3633 \u3610  Frontend \u3649 \u3621 \u3632 \u3648 \u3614 \u3636 \u3656 \u3617  Auto Scaling \u3626 \u3635 \u3627 \u3619 \u3633 \u3610  Backend \u3651 \u3609 \u3629 \u3609 \u3634 \u3588 \u3605 \u3652 \u3604 \u3657 \
+}
